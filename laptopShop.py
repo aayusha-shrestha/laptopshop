@@ -13,6 +13,7 @@ for line in laptop_file:
     inner_lst = line.split(",") #split the line on runs of commas
     laptops_2d_lst.append(inner_lst)
 laptop_file.close()
+print(laptops_2d_lst)
 
 def display_laptops():
     """reads text file containing laptops and displays it"""
@@ -34,7 +35,7 @@ display_operation_num()
 input_number = int(input("Enter the number of your choice for operation: "))
 
 if input_number == 1:
-    #personal info
+    #ask for personal info
     customer_name = input("Enter your name: ")
     customer_contact = int(input("Enter your phone number: "))
     customer_location = input("Enter your location: ")
@@ -52,7 +53,16 @@ if input_number == 1:
     while customer_qty <= 0 or customer_qty > current_qty:
         print("\n"+"INVALID QUANTITY"+"\n")
         customer_qty = int(input("Enter the number of laptops you would you like to purchase: "))
-    current_qty -= customer_qty
+    laptops_2d_lst[customer_laptop_id-1][3] = str(current_qty - customer_qty)
+
+    print(laptops_2d_lst)
+
+    #update laptop quantity in txt file
+    laptop_file = open("availableLaptops.txt","w")
+    for list in laptops_2d_lst:
+        list_to_string = ','.join(list)
+        laptop_file.write(list_to_string)
+    laptop_file.close()
 
 elif input_number == 3:
     exit()
