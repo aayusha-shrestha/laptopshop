@@ -13,7 +13,6 @@ for line in laptop_file:
     inner_lst = line.split(",") #split the line on runs of commas
     laptops_2d_lst.append(inner_lst)
 laptop_file.close()
-print(laptops_2d_lst)
 
 def display_laptops():
     """reads text file containing laptops and displays it"""
@@ -32,37 +31,49 @@ def display_operation_num():
     print("enter 3. To exit"+"\n")
 display_operation_num()
 
-input_number = int(input("Enter the number of your choice for operation: "))
-
-if input_number == 1:
-    #ask for personal info
-    customer_name = input("Enter your name: ")
-    customer_contact = int(input("Enter your phone number: "))
-    customer_location = input("Enter your location: ")
+user_input = True
+while user_input:
+    input_number = (input("Enter the number of your choice for operation: "))
+    if input_number == "1":
+        #ask for personal info
+        customer_name = input("Enter your name/company's name: ")
+        customer_contact = input("Enter your contact no.: ")
+        customer_address = input("Enter your address: ")
     
-    #ask for laptop id
-    customer_laptop_id = int(input("Enter laptop id of the laptop you would like to purchase: "))
-    while customer_laptop_id <= 0 or customer_laptop_id > len(laptops_2d_lst):
-        print("\n"+"INVALID INPUT"+"\n")
-        display_laptops()
-        customer_laptop_id = int(input("Enter laptop id of the laptop you would like to purchase: "))
+        def select_laptop():
+            #ask for laptop id
+            customer_laptop_id = int(input("Enter laptop id of the laptop you would like to purchase: "))
+            while customer_laptop_id <= 0 or customer_laptop_id > len(laptops_2d_lst):
+                print("\n"+"INVALID INPUT"+"\n")
+                display_laptops()
+                customer_laptop_id = int(input("Enter laptop id of the laptop you would like to purchase: "))
 
-    #update laptop quantity in 2d list
-    customer_qty = int(input("Enter the number of laptops you would you like to purchase: "))
-    current_qty = int(laptops_2d_lst[customer_laptop_id-1][3])
-    while customer_qty <= 0 or customer_qty > current_qty:
-        print("\n"+"INVALID QUANTITY"+"\n")
-        customer_qty = int(input("Enter the number of laptops you would you like to purchase: "))
-    laptops_2d_lst[customer_laptop_id-1][3] = str(current_qty - customer_qty)
+            #update laptop quantity in 2d list
+            customer_qty = int(input("Enter the number of laptops you would you like to purchase: "))
+            current_qty = int(laptops_2d_lst[customer_laptop_id-1][3])
+            while customer_qty <= 0 or customer_qty > current_qty:
+                print("\n"+"INVALID QUANTITY"+"\n")
+                customer_qty = int(input("Enter the number of laptops you would you like to purchase: "))
+            laptops_2d_lst[customer_laptop_id-1][3] = str(current_qty - customer_qty)
 
-    print(laptops_2d_lst)
+            #update laptop quantity in txt file
+            laptop_file = open("availableLaptops.txt","w")
+            for list in laptops_2d_lst:
+                list_to_string = ','.join(list)
+                laptop_file.write(list_to_string)
+            laptop_file.close()
+        select_laptop()
 
-    #update laptop quantity in txt file
-    laptop_file = open("availableLaptops.txt","w")
-    for list in laptops_2d_lst:
-        list_to_string = ','.join(list)
-        laptop_file.write(list_to_string)
-    laptop_file.close()
-
-elif input_number == 3:
-    exit()
+        #ask if more laptop needed
+        buy_more = True
+        while buy_more: 
+            user_answer = input("Do you want to buy more?(y/n): ")
+            if user_answer == "y":
+                select_laptop()
+            elif user_answer == "n":
+                print("Thank you for your purchase.")
+                buy_more = False     
+        #break loop
+        user_input = False
+    elif input_number == "3":
+        exit()
