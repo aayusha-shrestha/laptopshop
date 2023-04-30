@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 def welcome_msg():
     print("------------------------------------------------------------------------------------------------------------------------------------\n")
     print("\t\t\t\t\t\t\t" + "    Techno Zone" + "\n")
@@ -84,13 +86,14 @@ def select_laptop(cart):
 
 def bill(cart,obj_datetime,ship_or_not):
     date = obj_datetime.date()
-    time = obj_datetime.time()
-    print("\t\t\t\t" + " Sales Invoice" + "\n")
-    print("\t\t\t\t" + "  TECHNO ZONE" + "\n")
-    print("\t\t\t\t" + "    Kamaladi"+"\n")
+    time = obj_datetime.strftime("%H:%M:%S")
+    #generate invoice in terminal
+    print("\t\t\t\t" + "   Sales Invoice" + "\n")
+    print("\t\t\t\t" + "    TECHNO ZONE" + "\n")
+    print("\t\t\t\t" + "      Kamaladi"+"\n")
     print("\t\t\t" + "9841123456,Email:technozone@gmail.com"+"\n")
     print("---------------------------------------------------------------------------------------\n")
-    print("Party Details:","\t\t\t\t\t\t","Bill Date:",date,"\n"+"Mega Bank","\t\t\t\t\t\t","Bill Time:",time,"\n")
+    print("Party Details:","\t\t\t\t\t\t\t","Bill Date:",date,"\n"+"Mega Bank","\t\t\t\t\t\t\t","Bill Time:",time,"\n")
     print("---------------------------------------------------------------------------------------\n")
     print("Particulars\t\t"+"Brand\t\t\t"+"Qty\t\t"+"Net Rate\t"+"NetAmt\t")
     print("---------------------------------------------------------------------------------------\n")
@@ -114,3 +117,36 @@ def bill(cart,obj_datetime,ship_or_not):
     print("2.We offer complimentary repair services for our products upto 1 year with receipt.\n")
     print("\t\t\t\tT H A N K  Y O U")
     print("---------------------------------------------------------------------------------------\n")
+
+    #generate invoice in txt file
+    filename = "invoice" + str(uuid4()) + ".txt"
+    with open(filename,"w") as invoice:
+        invoice.write("\t\t\t\t\t\t" + "   Sales Invoice" + "\n")
+        invoice.write("\t\t\t\t\t\t" + "    TECHNO ZONE" + "\n")
+        invoice.write("\t\t\t\t\t\t" + "      Kamaladi"+"\n")
+        invoice.write("\t\t\t\t\t" + "9841123456,Email:technozone@gmail.com"+"\n")
+        invoice.write("---------------------------------------------------------------------------------------\n")
+        invoice.write("Party Details:"+"\t\t\t\t\t\t\t\t\t"+"Bill Date:"+str(date)+"\n"+"Mega Bank"+"\t\t\t\t\t\t\t\t\t\t"+"Bill Time:"+time+"\n")
+        invoice.write("---------------------------------------------------------------------------------------\n")
+        invoice.write("Particulars\t\t\t"+"Brand\t\t\t"+"Qty\t\t"+"Net Rate\t"+"NetAmt\t\n")
+        invoice.write("---------------------------------------------------------------------------------------\n")
+        for each in cart:
+            invoice.write("\t\t".join(each))
+            invoice.write("\n")
+        invoice.write("---------------------------------------------------------------------------------------\n")
+        total = 0
+        for each in cart:
+            total = total + int(each[4])
+        invoice.write("Total:\t\t\t\t\t\t\t\t\t\t"+str(total)+"\n")
+        if ship_or_not == "y":
+            shipping_charge = 100
+            ("Freight & Forwarding Charges:\t\t\t\t\t\t"+str(shipping_charge)+"\n")
+            invoice.write("---------------------------------------------------------------------------------------\n")
+            grand_total = total + shipping_charge
+            invoice.write("Grand Total:\t\t\t\t\t\t\t\t\t"+str(grand_total)+"\n")
+        invoice.write("---------------------------------------------------------------------------------------\n")
+        invoice.write("Terms & Conditions\n")
+        invoice.write("1.Goods once sold will not be returned.\n")
+        invoice.write("2.We offer complimentary repair services for our products upto 1 year with receipt.\n")
+        invoice.write("\t\t\t\t\t\tT H A N K  Y O U\n")
+        invoice.write("---------------------------------------------------------------------------------------\n")
