@@ -51,22 +51,39 @@ def personal_info():
 def select_laptop(operation_num,cart):
     inventory = get_laptops()
     #ask for laptop id
-    customer_laptop_id = int(input("Enter laptop id of the laptop you would like to purchase: "))
-    print("\n")
-    while customer_laptop_id <= 0 or customer_laptop_id > len(inventory):
-        print("INVALID INPUT"+"\n")
-        display_laptops()
-        customer_laptop_id = int(input("Enter laptop id of the laptop you would like to purchase: "))
-        print("\n")
+    id_success = False
+    while id_success == False:
+        try:
+            customer_laptop_id = int(input("Enter laptop id of the laptop you would like to purchase: "))
+            print("\n")
+            current_qty = int(inventory[customer_laptop_id-1][3])
+            if current_qty == 0:
+                print("The product is currently out of stock. We apologize for the inconvenience.\n"+
+                      "Please feel free to explore some of our other products that may meet your needs. \n")
+            elif customer_laptop_id <= 0 or customer_laptop_id > len(inventory):
+                print("ID DOES NOT EXIST\n")
+                display_laptops()
+            else :
+                id_success = True
+        except:
+            print("INVALID input for ID\n")
 
+    #ask for laptop quantity 
+    qty_success = False
+    while qty_success == False:
+        try:
+            customer_qty = int(input("Enter the number of laptops you would you like to purchase: "))
+            print("\n")
+            if customer_qty <= 0:
+                print("INVALID QUANTITY\n")
+            elif customer_qty > current_qty:
+                print("Unfortunately, at the moment we only have",current_qty,"available.\n")
+            else:
+                qty_success = True
+        except:
+            print("INVALID input for quantity\n")
+    
     #update laptop quantity in 2d list
-    customer_qty = int(input("Enter the number of laptops you would you like to purchase: "))
-    print("\n")
-    current_qty = int(inventory[customer_laptop_id-1][3])
-    while customer_qty <= 0 or customer_qty > current_qty:
-        print("INVALID QUANTITY"+"\n")
-        customer_qty = int(input("Enter the number of laptops you would you like to purchase: "))
-        print("\n")
     if operation_num == "1":
         inventory[customer_laptop_id-1][3] = str(current_qty - customer_qty)
     else:
