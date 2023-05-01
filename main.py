@@ -27,11 +27,13 @@ while True:
                     print("\n")
                     if ship_choice == "y":
                         bill(cart,ship_choice,operation_num)
+                        display_laptops()
                         display_operation_num()
                         cart = []
                         ship = False
                     elif ship_choice == "n":
                         bill(cart,ship_choice,operation_num)
+                        display_laptops()
                         display_operation_num()
                         cart = []
                         ship = False
@@ -50,6 +52,7 @@ while True:
             elif user_answer == "n":
                 ship_choice = "n"
                 bill(cart,ship_choice,operation_num)
+                display_laptops()
                 display_operation_num()
                 cart = []
                 buy_more = False     
