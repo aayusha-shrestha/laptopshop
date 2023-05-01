@@ -2,14 +2,13 @@ from datetime import datetime
 from uuid import uuid4
 
 def welcome_msg():
-    print("------------------------------------------------------------------------------------------------------------------------------------\n")
+    print("======================================================================================================================================\n")
     print("\t\t\t\t\t\t\t" + "    Techno Zone" + "\n")
     print("\t\t\t\t\t\t\t" + "Apple | Dell | Acer" + "\n")
     print("\t\t\t\t\t\t\t" + "      Kamaladi"+"\n")
-    print("-------------------------------------------------------------------------------------------------------------------------------------\n")
+    print("======================================================================================================================================\n")
     print("\t\t\t\t\t\t\t" + "Welcome to our shop !"+"\n")
     print("\t\t\t\t\t\t" + "Buy the best laptops at the best price."+"\n")
-    print("--------------------------------------------------------------------------------------------------------------------------------------\n")
 
 def get_laptops():
     laptops_2d_lst = []
@@ -22,30 +21,31 @@ def get_laptops():
 def display_laptops():
     """reads text file containing laptops and displays it"""
     with open("availableLaptops.txt","r") as laptop_file:
+        print("======================================================================================================================================\n")
         print("LAPTOP ID\t"+"NAME\t\t\t"+"BRAND\t\t\t"+"PRICE\t\t"+"QUANTITY\t"+"PROCESSOR\t\t"+"GRAPHIC CARD"+"\n")
-        print("--------------------------------------------------------------------------------------------------------------------------------------\n")
+        print("======================================================================================================================================\n")
         laptop_id = 1
         for line in laptop_file:
             print(laptop_id,"\t\t" + line.replace(",","\t\t"))
             laptop_id += 1
-        print("\n"+"--------------------------------------------------------------------------------------------------------------------------------------\n")
+        print("\n======================================================================================================================================\n")
 
 def display_operation_num():
-    print("\n"+"enter 1. To sell Laptop")
-    print("enter 2. To buy Laptop")
+    print("\n"+"enter 1. To sell Laptop to customers")
+    print("enter 2. To buy Laptop from manufacturer")
     print("enter 3. To exit"+"\n")
 
 def personal_info():
     """ask user their name, contact, address"""
     print("\n")
-    customer_name = input("Enter your name/company's name: ")
+    customer_name = input("Enter name/company's name: ")
     print("\n")
     print("Hi "+customer_name+"! Welcome to Techno Zone."+"\n"+"Take a look at our laptops and decide which one you want."+"\n"+
         "Before proceeding further we will be asking for your personal details for the bill.")
     print("\n")
-    customer_contact = input("Enter your contact no.: ")
+    customer_contact = input("Enter contact no.: ")
     print("\n")
-    customer_address = input("Enter your address: ")
+    customer_address = input("Enter address: ")
     print("\n")
 
 def select_laptop(operation_num,cart):
@@ -57,13 +57,16 @@ def select_laptop(operation_num,cart):
             customer_laptop_id = int(input("Enter laptop id of the laptop you would like to purchase: "))
             print("\n")
             current_qty = int(inventory[customer_laptop_id-1][3])
-            if current_qty == 0:
-                print("The product is currently out of stock. We apologize for the inconvenience.\n"+
+            if customer_laptop_id <= 0 or customer_laptop_id > len(inventory):
+                    print("ID DOES NOT EXIST\n")
+                    display_laptops()
+            elif operation_num == "1":
+                if current_qty == 0:
+                    print("The product is currently out of stock. We apologize for the inconvenience.\n"+
                       "Please feel free to explore some of our other products that may meet your needs. \n")
-            elif customer_laptop_id <= 0 or customer_laptop_id > len(inventory):
-                print("ID DOES NOT EXIST\n")
-                display_laptops()
-            else :
+                else :
+                    id_success = True
+            else:
                 id_success = True
         except:
             print("INVALID input for ID\n")
@@ -76,10 +79,16 @@ def select_laptop(operation_num,cart):
             print("\n")
             if customer_qty <= 0:
                 print("INVALID QUANTITY\n")
-            elif customer_qty > current_qty:
-                print("Unfortunately, at the moment we only have",current_qty,"available.\n")
-            else:
-                qty_success = True
+            elif operation_num == "1":
+                if customer_qty > current_qty:
+                    print("Unfortunately, at the moment we only have",current_qty,"available.\n")
+                else:
+                    qty_success = True
+            elif operation_num == "2":
+                if customer_qty > 100:
+                    print("Please note that we are currently limiting orders to 100 per resellers.\n")
+                else:
+                    qty_success = True
         except:
             print("INVALID input for quantity\n")
     
