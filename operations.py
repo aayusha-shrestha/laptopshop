@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import uuid4
 
 def welcome_msg():
@@ -47,7 +48,7 @@ def personal_info():
     customer_address = input("Enter your address: ")
     print("\n")
 
-def select_laptop(cart):
+def select_laptop(operation_num,cart):
     inventory = get_laptops()
     #ask for laptop id
     customer_laptop_id = int(input("Enter laptop id of the laptop you would like to purchase: "))
@@ -66,7 +67,10 @@ def select_laptop(cart):
         print("INVALID QUANTITY"+"\n")
         customer_qty = int(input("Enter the number of laptops you would you like to purchase: "))
         print("\n")
-    inventory[customer_laptop_id-1][3] = str(current_qty - customer_qty)
+    if operation_num == "1":
+        inventory[customer_laptop_id-1][3] = str(current_qty - customer_qty)
+    else:
+        inventory[customer_laptop_id-1][3] = str(current_qty + customer_qty)
 
     #update laptop quantity in txt file
     with open("availableLaptops.txt","w") as laptop_file:
@@ -76,15 +80,14 @@ def select_laptop(cart):
     #cart
     customer_product = inventory[customer_laptop_id-1][0]
     brand = inventory[customer_laptop_id-1][1]
-    rate = inventory[customer_laptop_id-1][2]
-    cost_price = inventory[customer_laptop_id-1][2].replace("$","")
-    net_amount = int(cost_price)*customer_qty
+    rate = inventory[customer_laptop_id-1][2].replace("$","")
+    net_amount = int(rate)*customer_qty
 
     cart.append([customer_product,brand,str(customer_qty),rate,str(net_amount)])
-    print(cart)
     return cart
 
-def bill(cart,obj_datetime,ship_or_not):
+def bill(cart,ship_choice,operation_num):
+    obj_datetime = datetime.now()
     date = obj_datetime.date()
     time = obj_datetime.strftime("%H:%M:%S")
     #generate invoice in terminal
@@ -105,12 +108,18 @@ def bill(cart,obj_datetime,ship_or_not):
     for each in cart:
         total = total + int(each[4])
     print("Total:\t\t\t\t\t\t\t\t\t\t"+str(total)+"\n")
-    if ship_or_not == "y":
+    if ship_choice == "y":
         shipping_charge = 100
         print("Freight & Forwarding Charges:\t\t\t\t\t\t\t"+str(shipping_charge)+"\n")
         print("---------------------------------------------------------------------------------------\n")
         grand_total = total + shipping_charge
         print("Grand Total:\t\t\t\t\t\t\t\t\t"+str(grand_total))
+    if operation_num == "2":
+        vat = (13/100)*total
+        print("VAT[13%]:\t\t\t\t\t\t\t\t\t"+str(vat)+"\n")
+        print("---------------------------------------------------------------------------------------\n")
+        gross_amount = total + vat
+        print("Gross Amount:\t\t\t\t\t\t\t\t\t"+str(gross_amount))
     print("---------------------------------------------------------------------------------------\n")
     print("Terms & Conditions\n")
     print("1.Goods once sold will not be returned.")
@@ -138,7 +147,7 @@ def bill(cart,obj_datetime,ship_or_not):
         for each in cart:
             total = total + int(each[4])
         invoice.write("Total:\t\t\t\t\t\t\t\t\t\t"+str(total)+"\n")
-        if ship_or_not == "y":
+        if ship_choice == "y":
             shipping_charge = 100
             ("Freight & Forwarding Charges:\t\t\t\t\t\t"+str(shipping_charge)+"\n")
             invoice.write("---------------------------------------------------------------------------------------\n")
