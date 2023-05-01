@@ -149,10 +149,16 @@ def bill(cart,ship_choice,operation_num):
         invoice.write("Total:\t\t\t\t\t\t\t\t\t\t"+str(total)+"\n")
         if ship_choice == "y":
             shipping_charge = 100
-            ("Freight & Forwarding Charges:\t\t\t\t\t\t"+str(shipping_charge)+"\n")
+            invoice.write("Freight & Forwarding Charges:\t\t\t\t\t\t\t"+str(shipping_charge)+"\n")
             invoice.write("---------------------------------------------------------------------------------------\n")
             grand_total = total + shipping_charge
             invoice.write("Grand Total:\t\t\t\t\t\t\t\t\t"+str(grand_total)+"\n")
+        if operation_num == "2":
+            vat = (13/100)*total
+            invoice.write("VAT[13%]:\t\t\t\t\t\t\t\t\t\t"+str(vat)+"\n")
+            invoice.write("---------------------------------------------------------------------------------------\n")
+            gross_amount = total + vat
+            invoice.write("Gross Amount:\t\t\t\t\t\t\t\t\t"+str(gross_amount)+"\n")
         invoice.write("---------------------------------------------------------------------------------------\n")
         invoice.write("Terms & Conditions\n")
         invoice.write("1.Goods once sold will not be returned.\n")
