@@ -3,13 +3,9 @@ from read import display_laptops
 from write import welcome_msg,display_operation_num,bill
 
 welcome_msg()
-
 display_laptops()
-
 display_operation_num()
-
 cart = []
-
 while True:
     operation_num = input("Enter the number of your choice for operation: ")
     print("\n")
