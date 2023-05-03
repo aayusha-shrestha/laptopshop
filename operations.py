@@ -1,10 +1,16 @@
 def get_laptops():
+    """reads txt file containing laptops and stores it in 2d list"""
     laptops_2d_lst = []
-    with open("read.txt","r") as laptop_file:
-        for line in laptop_file:
-            inner_lst = line.split(",") #split the line on runs of commas
-            laptops_2d_lst.append(inner_lst)
-    return laptops_2d_lst
+    try:
+        with open("read.txt","r") as laptop_file:
+            for line in laptop_file:
+                inner_lst = line.split(",") #split the line on runs of commas
+                laptops_2d_lst.append(inner_lst)
+        return laptops_2d_lst
+    except FileNotFoundError:
+        print("File not found")
+    except Exception:
+        print("An error occured")
 
 def select_laptop(operation_num,cart):
     inventory = get_laptops()
@@ -57,9 +63,14 @@ def select_laptop(operation_num,cart):
         inventory[customer_laptop_id-1][3] = str(current_qty + customer_qty)
 
     #update laptop quantity in txt file
-    with open("read.txt","w") as laptop_file:
-        for list in inventory:
-            laptop_file.write(','.join(list))
+    try:
+        with open("read.txt","w") as laptop_file:
+            for list in inventory:
+                laptop_file.write(','.join(list))
+    except FileNotFoundError:
+        print("File not found")
+    except Exception:
+        print("An error occured")
             
     #cart
     customer_product = inventory[customer_laptop_id-1][0]
