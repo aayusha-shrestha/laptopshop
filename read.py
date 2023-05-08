@@ -28,3 +28,14 @@ def display_laptops():
         print("File not found")
     except Exception:
         print("An error occured")
+
+def display_bill(filename):
+    """reads bill generated in txt file and prints it on console"""
+    try:
+        with open(filename,"r") as invoice:
+            for line in invoice:
+                print(line)
+    except FileNotFoundError:
+        print("File not found")
+    except Exception:
+        print("An error occured")
