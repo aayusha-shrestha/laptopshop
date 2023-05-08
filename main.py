@@ -1,10 +1,11 @@
-from operations import select_laptop
-from read import display_laptops
+from operations import select_qty
+from read import get_laptops,display_laptops
 from write import welcome_msg,display_operation_num,bill
 
 welcome_msg()
 display_laptops()
 display_operation_num()
+inventory = get_laptops()
 cart = []
 while True:
     operation_num = input("Enter the number of your choice for operation: ")
@@ -12,7 +13,7 @@ while True:
     if operation_num == "1":
         name = input("Enter name/company's name: ")
         print("\n")
-        cart = select_laptop(operation_num,cart)
+        cart = select_qty(inventory,operation_num,cart)
         #ask if more laptop needed
         buy_more = True
         while buy_more: 
@@ -20,7 +21,7 @@ while True:
             print("\n")
             if user_answer == "y":
                 display_laptops()
-                select_laptop(operation_num,cart)
+                select_qty(inventory,operation_num,cart)
             elif user_answer == "n":
                 ship = True
                 while ship:
@@ -42,7 +43,7 @@ while True:
     elif operation_num == "2":
         name = input("Enter name/company's name: ")
         print("\n")
-        cart = select_laptop(operation_num,cart)
+        cart = select_qty(inventory,operation_num,cart)
         #ask if more laptop needed
         buy_more = True
         while buy_more: 
@@ -50,7 +51,7 @@ while True:
             print("\n")
             if user_answer == "y":
                 display_laptops()
-                select_laptop(operation_num,cart)
+                select_qty(inventory,operation_num,cart)
             elif user_answer == "n":
                 ship_choice = "n"
                 bill(name,cart,ship_choice,operation_num)
