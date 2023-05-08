@@ -23,7 +23,7 @@ def bill(name,cart,ship_choice,operation_num):
     time = obj_datetime.strftime("%H-%M-%S")
 
     #generate invoice in txt file
-    filename = "invoice" + time + ".txt"
+    filename = "invoice_" + name + "_" + time + ".txt"
     try:
         with open(filename,"w") as invoice:
             invoice.write("\t\t\t\t" + "   Sales Invoice" + "\n")
