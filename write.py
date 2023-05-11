@@ -47,13 +47,13 @@ def bill(name,cart,ship_choice,operation_num):
             invoice.write(bill_border)
             invoice.write("Particulars\t\t" + "Brand\t\t\t" + "Qty\t\t" + "Net Rate\t" + "NetAmt\t\n")
             invoice.write(bill_border)
-            for each in cart:
-                invoice.write("\t\t".join(each))
+            for list in cart:
+                invoice.write("\t\t".join(list))
                 invoice.write("\n")
             invoice.write(bill_border)
             total = 0
-            for each in cart:
-                total = total + int(each[4])
+            for list in cart:
+                total = total + int(list[4])
             invoice.write("Total:\t\t\t\t\t\t\t\t\t\t"+str(total)+"\n")
             if ship_choice == "y":
                 shipping_charge = 10
