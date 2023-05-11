@@ -1,16 +1,28 @@
+def get_name():
+    """asks user's name and validates it"""
+    name_is_string = False
+    while name_is_string == False:
+        name = input("Enter name/company's name: ")
+        print("\n")
+        if name.isalpha():
+            print("Hi "+name+"! Welcome to our shop."+"\n"+"Take a look at our laptops and decide which one you want."+"\n")
+            name_is_string = True
+            return name
+        else:
+            print("Error: Please input a valid name.\n")
+
 def select_id(inventory,operation_num):
     """asks for laptop id and validates it"""
     id_success = False
     while id_success == False:
         try:
             laptop_id = int(input("Enter the desired laptop id: "))
-            print("\n")
-            current_qty = int(inventory[laptop_id-1][3])      
+            print("\n")      
             if operation_num == "1":
                 if laptop_id <= 0 or laptop_id > len(inventory):
                     print("Error: ID does not exist\n")
                     # display_laptops()
-                elif current_qty == 0:
+                elif int(inventory[laptop_id-1][3]) == 0: 
                     print("The product is currently out of stock. We apologize for the inconvenience.\n"+
                       "Please feel free to explore some of our other products that may meet your needs. \n")
                 else :
@@ -34,7 +46,7 @@ def select_qty(current_qty,operation_num):
             print("\n")
             if operation_num == "1":
                 if laptop_qty <= 0:
-                    print("Error: Invalid quantity\n")
+                    print("Error: Quantity cannot be negative or zero\n")
                 elif laptop_qty > current_qty:
                     print("Unfortunately, at the moment we only have",current_qty,"available.\n")
                 else:
